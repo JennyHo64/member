@@ -29,7 +29,18 @@ $(document).on('click','#submit',function(){
 
     return window.fetch(appurl,reqInit).then(function(res){
         res.json().then(function(resJson){
+            let idInFuc=resJson.id;
+            let nameInFuc=resJson.name;
+            let ageInFuc=resJson.age;
+            let sexInFuc=resJson.sex;
+
+            let trElement = `<tr data-memberId="${idInFuc}">
+                                <th>${nameInFuc}</th>
+                                <th>${ageInFuc}</th>
+                                <th>${sexInFuc}</th>
+                            </tr>`;
             console.log(resJson);//resJson是處理完的結果
+            $('#member-list').append(trElement);
         })
         
         console.log(res);  //這裡是後端把結果丟給前端(ex:顯示出剛剛前面輸入的結果)
