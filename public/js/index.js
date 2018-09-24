@@ -1,10 +1,11 @@
+//2.取得會員資料
+
 $(document).ready(function(){
    getMembers();
 });
 
-//2.取得會員資料
 function getMembers(){
-    let apiUrl = 'http://localhost:3000/api/take';
+    let apiUrl = 'http://localhost:3000/api/take';  //為何麼不能在/creat??
     let reqInit = {
         "headers": new Headers({'Content-Type': 'application/json'}),//header的H要大寫!!!!!!
         "method": 'GET'
@@ -12,17 +13,17 @@ function getMembers(){
 
     return window.fetch(apiUrl,reqInit).then(function(res){
         res.json().then(function(resJson){
-            let docs= resJson.docs;
+            let docs= resJson.docs;//要從哪裡看docs??
             //let docs = resJson['docs']//同等於上一行
-            docs.map(function(doc){
+            docs.map(function(doc){  //map是一個迴圈的形式取所有資料的值
                 let id=doc.id;
                 let name=doc.name;
                 let age=doc.age;
                 let sex=doc.sex;
                 let trElement = `<tr data-memberId="${id}">
-                                <th id="th-name">${name}</th>
-                                <th id="th-age">${age}</th>
-                                <th id="th-sex">${sex}</th>
+                                    <th id="th-name">${name}</th>
+                                    <th id="th-age">${age}</th>
+                                    <th id="th-sex">${sex}</th>
                                 <td>
                                     <button type="button" id="delete">刪除</button>
                                     <button type="button" id="modify" data-toggle="modal" data-target="#update-modal">修改</button>
@@ -39,7 +40,7 @@ function getMembers(){
 
 //1.新增成員
 $(document).on('click','#submit',function(){
-    let name= $('#name').val();//如果val內沒有輸入值代表要取name的職.若val內有直則改變name元友直
+    let name= $('#name').val();//如果val內沒有輸入值代表要取name的職.若val內有直則改變name原有值
     //宣告變數可用 var let,let只能在該function中作用
     let age = $('#age').val();
     let sex = $('#sex').val();
@@ -76,7 +77,7 @@ $(document).on('click','#submit',function(){
                                 <th id="th-sex">${sexInFuc}</th>
                             </tr>`;
             console.log(resJson);//resJson是處理完的結果
-            $('#member-list').append(trElement);
+            $('#member-list').append(trElement);//member-list是哪來的?
         })
         
         console.log(res);  //這裡是後端把結果丟給前端(ex:顯示出剛剛前面輸入的結果)
@@ -84,9 +85,9 @@ $(document).on('click','#submit',function(){
     })
 });
 
-
+//3.修改
 $(document).on('click','#modify',function(){
-    let thName=$(this).parent().parent().find('#th-name').text();
+    let thName=$(this).parent().parent().find('#th-name').text();  //$(this)在瀏覽器的F12裡面用watch看
     let thAge=$(this).parent().parent().find('#th-age').text();
     let thSex=$(this).parent().parent().find('#th-sex').text();
 

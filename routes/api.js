@@ -25,14 +25,15 @@ router.post('/creat',function(req,res){
       
         var db = cloudant.db.use("member");
 
-        db.insert(pushData, function(err, data) {
+        db.insert(pushData, function(err, data) {  // //data是回傳給資料庫的結果
           // The rest of your code goes here. For example:
           if (err) {
-            return console.log('Failed to insert: ' + err.message);
+              return console.log('Failed to insert: ' + err.message);
           }
           let id=data.id;
           pushData.id=id;  //意思是在push裡面加一個"id":id like上面14~16行
-          res.status(200).json(pushData);
+          res.status(200).json(pushData);//將被新增的資料帶上那個唯一識別的id回傳給前端，告訴前端說這筆資料已經新增進資料庫了
+          
         });
       });
 
@@ -56,11 +57,11 @@ router.get('/take',function(req,res){
         "sort": [{"timeStemp": "asc"}]
       }
 
-
+    
     db.find(quary,function(err, data) {
       // The rest of your code goes here. For example:
       if (err) {
-        return console.log('Failed to insert: ' + err.message);
+        return console.log('Failed to Find: ' + err.message);
       }
       console.log(data);
       res.status(200).json(data);
