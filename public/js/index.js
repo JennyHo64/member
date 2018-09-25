@@ -1,5 +1,8 @@
 (function(){
     var memberId;
+    var delMemName;
+    var delMemAge;
+    var delMemSex;
 
     //2.取得會員資料
 
@@ -28,7 +31,7 @@
                                         <th id="th-age">${age}</th>
                                         <th id="th-sex">${sex}</th>
                                     <td>
-                                        <button type="button" id="delete">刪除</button>
+                                        <button type="button" id="delete" data-toggle="modal" data-target="#delete-modal">刪除</button>
                                         <button type="button" id="modify" data-toggle="modal" data-target="#update-modal">修改</button>
                                     </td>
                                 </tr>`;
@@ -79,7 +82,7 @@
                                     <th id="th-age">${ageInFuc}</th>
                                     <th id="th-sex">${sexInFuc}</th>
                                 <td>
-                                    <button type="button" id="delete">刪除</button>
+                                    <button type="button" id="delete" data-toggle="modal" data-target="#delete-modal">刪除</button>
                                     <button type="button" id="modify" data-toggle="modal" data-target="#update-modal">修改</button>
                                 </td>
                                 </tr>`;
@@ -140,6 +143,51 @@
         })
     });
 
+    //4.刪除會員
+    $(document).on('click','#delete',function(){  //點刪除後出現彈出視窗
+        let delMemName=$(this).parent().parent().find('#th-name').text();  
+        let delMemAge=$(this).parent().parent().find('#th-age').text();   
+        let delMemSex=$(this).parent().parent().find('#th-sex').text();
+        memberId=$(this).parent().parent().attr('id');
+    })
+
+    $(document).on('click','#delComfirm',function(){  //點確認刪除後刪除該筆資料並關閉視窗
+        
+        let apiUrl=window.location.origin + '/api/delete';
+        let reqInit={
+            "headers": new Headers({'Content-Type': 'application/json'}),//header的H要大寫!!!!!!
+            "method": 'POST', 
+            "body":JSON.stringify({
+                "name_key":delMemName,
+                "age_key":delMemAge,
+                "sex_key":delMemSex,
+                "id_key":memberId  //memberId在修改跟刪除的時候都要用到，是db的唯一識別
+            })
+        }
+        return window.fetch(apiurl,reqInit).then(function(res){
+            res.json().then(function(resJson){   //res是後端送回給前端的結果  .json()把res解開  存到resJson
+                let idInDel=resJson.id;
+                let nameInDel=resJson.name;
+                let ageInDel=resJson.age;
+                let sexInDel=resJson.sex;
+
+                let trElement = `<tr id="${idInDel}">
+                                    <th id="th-name">${nameInDel}</th>
+                                    <th id="th-age">${ageInDel}</th>
+                                    <th id="th-sex">${sexInDel}</th>
+                                <td>
+                                    <button type="button" id="delete" data-toggle="modal" data-target="#delete-modal">刪除</button>
+                                    <button type="button" id="modify" data-toggle="modal" data-target="#update-modal">修改</button>
+                                </td>
+                                </tr>`;
+                console.log(resJson);//resJson是處理完的結果
+                $('#member-list').remove(trElement);
+            })
+
+            
+        })
+        
+    })
 
 }());
 

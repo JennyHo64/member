@@ -69,7 +69,7 @@ router.get('/take',function(req,res){
   });
 })
 
-
+//3.修改會員
 router.put('/update',function(req,res){
   let name=req.body.name_key;
   let age=req.body.age_key;
@@ -112,5 +112,38 @@ router.put('/update',function(req,res){
     });
   })
 })
+
+//4.刪除會員
+router.put('/delete',function(req,res){
+
+  let id=req.body.id_key;
+
+  Cloudant({account:username, password:password}, function(err, cloudant) {
+    if (err) {
+      return console.log('Failed to initialize Cloudant: ' + err.message);
+    }
+    var db = cloudant.db.use("member");
+      let quary={
+        "selector":{
+          "_id":{
+            "$eq":id
+          } 
+        },
+        "sort": [{"timeStemp": "asc"}]   //到BD新增index的地方，先在左上修改之後再按新增
+      }
+      
+
+      db.delete(doc,function(err,result){
+        if (err) {
+          return console.log('Failed to delete: ' + err.message);
+        }
+        
+        
+        res.status(200).json(doc);
+      })
+    });
+  });
+
+
 
 module.exports = router; //後端程式寫完都需要加這一行供其他程式使用
