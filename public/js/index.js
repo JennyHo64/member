@@ -7,7 +7,7 @@
     //2.取得會員資料
 
     $(document).ready(function(){
-    getMembers();
+        getMembers();
     });
 
     function getMembers(){
@@ -110,7 +110,7 @@
 
     $(document).on('click','#saveChange',function(){
         let modalName= $('#name_m').val();
-        let modalAge= $('#ag_m').val();
+        let modalAge= $('#age_m').val();
         let modalsex= $('#sex_m').val();
 
         let apiUrl=window.location.origin + '/api/update';
@@ -163,7 +163,7 @@
                 "id_key":memberId  //memberId在修改跟刪除的時候都要用到，是db的唯一識別
             })
         }
-        return window.fetch(apiurl,reqInit).then(function(res){
+        return window.fetch(apiUrl,reqInit).then(function(res){
             res.json().then(function(resJson){   //res是後端送回給前端的結果  .json()把res解開  存到resJson
                 let idInDel=resJson.id;
                 let nameInDel=resJson.name;
@@ -180,7 +180,7 @@
                                 </td>
                                 </tr>`;
                 console.log(resJson);//resJson是處理完的結果
-                $('#member-list').remove(trElement);
+                $('#' + idInDel).remove();
             })
 
             

@@ -116,13 +116,14 @@ router.put('/update',function(req,res){
 })
 
 //4.刪除會員
-router.put('/delete',function(req,res){
+router.post('/delete',function(req,res){
 
   let id = req.body.id_key;
   let name = req.body.name_key;
   let age = req.body.age_key;
   let sex = req.body.sex_key;
   let delData = {
+    "id": id,
     "name": name,
     "age" : age,
     "sex" : sex,
@@ -136,7 +137,7 @@ router.put('/delete',function(req,res){
       let quary={
         "selector":{
           "_id":{
-            "$eq":id
+            "$eq":id   //eq 是noSQl的運算元  $lt(less than)  $gt(greater than)  $eq(equal)  $or(or)
           } 
         },
         "sort": [{"timeStemp": "asc"}]   //到BD新增index的地方，先在左上修改之後再按新增
@@ -148,13 +149,21 @@ router.put('/delete',function(req,res){
           return console.log('Failed to Find: ' + err.message);
         }
         console.log(data);
-  
-        db.destroy(delData,function(err,result){
-          if (err) {
-            return console.log('Failed to insert: ' + err.message);
+        
+        db.get(id, function(err,data){
+          if (!err) {
+            var latestRev = data._rev;
+            db.destroy(id, latestRev, function(err, delResult, header) {
+              if (!err) {
+
+                  console.log("Successfully deleted doc", id);
+                  res.status(200).json(delData);
+              }
+            });
           }
         })
-        res.status(200).json(delData);
+
+        
       })
     
   });
