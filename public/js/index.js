@@ -103,7 +103,6 @@
 
         memberId=$(this).parent().parent().attr('id');   //this是指click到#modify  //全域變數在最前面已經宣告過了
 
-
         $('#name_m').val(thName);
         $('#age_m').val(thAge);
         $('#sex_m').val(thSex);
@@ -145,9 +144,9 @@
 
     //4.刪除會員
     $(document).on('click','#delete',function(){  //點刪除後出現彈出視窗
-        let delMemName=$(this).parent().parent().find('#th-name').text();  
-        let delMemAge=$(this).parent().parent().find('#th-age').text();   
-        let delMemSex=$(this).parent().parent().find('#th-sex').text();
+        delMemName=$(this).parent().parent().find('#th-name').text();  
+        delMemAge=$(this).parent().parent().find('#th-age').text();   
+        delMemSex=$(this).parent().parent().find('#th-sex').text();//怎麼取姓名年齡性別??
         memberId=$(this).parent().parent().attr('id');
     })
 
@@ -156,7 +155,7 @@
         let apiUrl=window.location.origin + '/api/delete';
         let reqInit={
             "headers": new Headers({'Content-Type': 'application/json'}),//header的H要大寫!!!!!!
-            "method": 'POST', 
+            "method": 'POST',                                    
             "body":JSON.stringify({
                 "name_key":delMemName,
                 "age_key":delMemAge,

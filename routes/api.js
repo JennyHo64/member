@@ -75,6 +75,8 @@ router.put('/update',function(req,res){
   let age=req.body.age_key;
   let sex=req.body.sex_key;
   let id=req.body.id_key;
+
+  
   Cloudant({account:username, password:password}, function(err, cloudant) {
     if (err) {
       return console.log('Failed to initialize Cloudant: ' + err.message);
@@ -116,8 +118,16 @@ router.put('/update',function(req,res){
 //4.刪除會員
 router.put('/delete',function(req,res){
 
-  let id=req.body.id_key;
-
+  let id = req.body.id_key;
+  let name = req.body.name_key;
+  let age = req.body.age_key;
+  let sex = req.body.sex_key;
+  let delData = {
+    "name": name,
+    "age" : age,
+    "sex" : sex,
+    "timeStemp":Date.now()
+  }
   Cloudant({account:username, password:password}, function(err, cloudant) {
     if (err) {
       return console.log('Failed to initialize Cloudant: ' + err.message);
@@ -132,18 +142,23 @@ router.put('/delete',function(req,res){
         "sort": [{"timeStemp": "asc"}]   //到BD新增index的地方，先在左上修改之後再按新增
       }
       
-
-      db.delete(doc,function(err,result){
+      db.find(quary,function(err, data) {
+        // The rest of your code goes here. For example:
         if (err) {
-          return console.log('Failed to delete: ' + err.message);
+          return console.log('Failed to Find: ' + err.message);
         }
-        
-        
-        res.status(200).json(doc);
+        console.log(data);
+  
+        db.destroy(delData,function(err,result){
+          if (err) {
+            return console.log('Failed to insert: ' + err.message);
+          }
+        })
+        res.status(200).json(delData);
       })
-    });
+    
   });
 
-
+})
 
 module.exports = router; //後端程式寫完都需要加這一行供其他程式使用
