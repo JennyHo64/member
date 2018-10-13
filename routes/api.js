@@ -1,8 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var Cloudant = require('@cloudant/cloudant'); //使用cloudant資料庫的寫法//在github上有
-var username = '290882c8-24eb-4919-8987-f6f8b8fdfab8-bluemix'; 
-var password = 'bd7d946c9b83b6663b65ca6ab829345c272961c5beec2869d37dd6803469bf3f';
+var username = '70720693-3b83-43f8-8f34-0b21dd602d29-bluemix'; 
+var password = '0054352d9a42a620a4aef3f3ab7a01ebf7f0bfabaa214d70616698cfe1460258';
 
 //1.新增成員
 router.post('/creat',function(req,res){

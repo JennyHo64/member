@@ -131,7 +131,7 @@
                 let sex = resJson.sex;
                 let id = resJson._id;
 
-                $('#' + id).find('#th-name').text(name);   //在選擇棄裡面'#'代表html的id
+                $('#' + id).find('#th-name').text(name);   //在CSS選擇器裡面'#'代表html的id
                 $('#' + id ).find('#th-age').text(age);
                 $('#' + id ).find('#th-sex').text(sex);
             }).then(function(){
@@ -146,7 +146,7 @@
     $(document).on('click','#delete',function(){  //點刪除後出現彈出視窗
         delMemName=$(this).parent().parent().find('#th-name').text();  
         delMemAge=$(this).parent().parent().find('#th-age').text();   
-        delMemSex=$(this).parent().parent().find('#th-sex').text();//怎麼取姓名年齡性別??
+        delMemSex=$(this).parent().parent().find('#th-sex').text();
         memberId=$(this).parent().parent().attr('id');
     })
 
